@@ -55,11 +55,6 @@
   .filetag{display:inline-block; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.08em;
     text-transform:uppercase; color:var(--muted); border:1px solid var(--rule); border-radius:3px; padding:1px 6px; margin-left:8px; vertical-align:middle;}
 
-  .startbar{display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 4px;}
-  .startbar a{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.06em; text-decoration:none;
-    color:var(--navy); border:1px solid var(--rule); border-radius:5px; padding:9px 14px; background:#fffdf6; transition:background .15s;}
-  .startbar a:hover{background:#efe7d4;}
-
   .note{font-size:13.5px; color:var(--muted); font-style:italic; margin-top:8px;}
 
   .foot{margin-top:44px; padding-top:16px; border-top:1.5px solid var(--rule); font-family:'Space Mono',monospace;
@@ -83,11 +78,13 @@
   <p class="lead">Welcome to HQ, Agent. Everything you need for the summer lives here. Every mission asks one question in a different costume: <span class="big">how do you turn a message into a signal, push it across distance, keep yours secret, and break someone else&rsquo;s?</span></p>
 
   <h2>Start here</h2>
-  <div class="startbar">
-    <a href="dossier.html">&#9733; Read the Dossier first</a>
-    <a href="briefs.html">All seven mission briefs</a>
-  </div>
-  <p class="note">New here? Read the Dossier for the big picture, then open each mission brief when you&rsquo;re ready to begin it.</p>
+
+  <a class="card c-doc" href="dossier.html">
+    <div class="badge"><div class="n">&#9733;</div><div class="k">Dossier</div></div>
+    <div class="body"><p class="t">The Summer Dossier</p><p class="d">The master plan: the mind map, all missions, gear, and timeline in one place.</p></div>
+    <div class="go">&rarr;</div>
+  </a>
+  <p class="note">New here? Read the Dossier for the big picture, then open each mission below when you&rsquo;re ready to begin it.</p>
 
   <h2>The missions, in order</h2>
 
@@ -146,16 +143,41 @@
   </a>
 
   <h2>Reference shelf</h2>
+  <p class="note">Outside reading, vetted by HQ. Dig deeper on any thread whenever you like &mdash; these open in a new tab.</p>
 
-  <a class="card c-doc" href="dossier.html">
-    <div class="badge"><div class="n">&#9733;</div><div class="k">Dossier</div></div>
-    <div class="body"><p class="t">The Summer Dossier</p><p class="d">The master plan: the mind map, all missions, gear, and timeline in one place.</p></div>
+  <a class="card c-recon" href="https://mitmuseum.mit.edu/collections/object/2007.030.001" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">Patron</div></div>
+    <div class="body"><p class="t">Shannon &amp; Theseus <span class="filetag">mitmuseum.mit.edu</span></p><p class="d">The maze-solving mouse at the MIT Museum &mdash; the machine that started it all.</p></div>
     <div class="go">&rarr;</div>
   </a>
 
-  <a class="card c-navy" href="briefs.html">
-    <div class="badge"><div class="n">&#9636;</div><div class="k">Briefs</div></div>
-    <div class="body"><p class="t">Mission Briefing Packet</p><p class="d">All seven sealed orders, one per page. Read each when its mission begins.</p></div>
+  <a class="card c-field" href="https://www.bletchleypark.org.uk/our-story/6-facts-about-the-bombe/" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">WWII</div></div>
+    <div class="body"><p class="t">Bletchley &amp; the Bombe <span class="filetag">bletchleypark.org.uk</span></p><p class="d">How Turing&rsquo;s machine cracked Enigma &mdash; the codebreaking thread that links back to Shannon.</p></div>
+    <div class="go">&rarr;</div>
+  </a>
+
+  <a class="card c-cipher" href="https://www.khanacademy.org/computing/computer-science/cryptography/crypt/pi/caesar-cipher-exploration" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">Ciphers</div></div>
+    <div class="body"><p class="t">Journey into Cryptography <span class="filetag">khanacademy.org</span></p><p class="d">Caesar ciphers, frequency analysis, and the unbreakable one-time pad &mdash; interactive lessons.</p></div>
+    <div class="go">&rarr;</div>
+  </a>
+
+  <a class="card c-signal" href="https://www.rtl-sdr.com/rtl-sdr-quick-start-guide/" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">SDR</div></div>
+    <div class="body"><p class="t">RTL-SDR Quick-Start <span class="filetag">rtl-sdr.com</span></p><p class="d">Set up the USB receiver and start seeing the radio spectrum on your screen.</p></div>
+    <div class="go">&rarr;</div>
+  </a>
+
+  <a class="card c-onair" href="https://hamstudy.org/" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">Ham</div></div>
+    <div class="body"><p class="t">HamStudy.org <span class="filetag">hamstudy.org</span></p><p class="d">Free flash cards and practice exams for the Technician license &mdash; the 2026&ndash;2030 pool.</p></div>
+    <div class="go">&rarr;</div>
+  </a>
+
+  <a class="card c-build" href="https://meshtastic.org/docs/getting-started/" target="_blank" rel="noopener">
+    <div class="badge"><div class="n">&#8599;</div><div class="k">LoRa</div></div>
+    <div class="body"><p class="t">Meshtastic: Getting Started <span class="filetag">meshtastic.org</span></p><p class="d">Flash the Heltec boards and send your first off-grid message.</p></div>
     <div class="go">&rarr;</div>
   </a>
 
