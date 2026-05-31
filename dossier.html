@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation: Signals &amp; Secrets — Summer Field Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecdd; --panel:#fbf7ec; --ink:#221f1a; --muted:#6a6151;
+    --line:#cabfa3; --rule:#bcae8e; --amber:#9a5b12; --teal:#0f6e56;
+    --stamp:#9a2d22; --navy:#22324a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Spectral',Georgia,serif; font-size:17px; line-height:1.65;
+    background-image:radial-gradient(circle at 12% 8%, rgba(154,91,18,.05), transparent 40%),
+                     radial-gradient(circle at 88% 92%, rgba(34,50,74,.05), transparent 42%);
+  }
+  .sheet{max-width:880px; margin:0 auto; padding:48px 30px 80px;}
+  .frame{border:1.5px solid var(--rule); padding:34px 38px 44px; position:relative; background:var(--panel);
+    box-shadow:0 1px 0 var(--rule), 0 18px 50px -30px rgba(34,31,26,.5);}
+  .frame::before{content:""; position:absolute; inset:7px; border:0.5px solid var(--rule); pointer-events:none;}
+
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; font-family:'Space Mono',monospace;
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .stamp{border:2px solid var(--stamp); color:var(--stamp); padding:6px 12px; transform:rotate(3deg);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:12px; letter-spacing:.16em; border-radius:3px;
+    opacity:.85;}
+
+  h1{font-family:'Fraunces',serif; font-weight:900; font-size:46px; line-height:1.02; margin:26px 0 6px;
+    letter-spacing:-.01em;}
+  .sub{font-family:'Space Mono',monospace; font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:22px;}
+  .meta{display:flex; flex-wrap:wrap; gap:8px 28px; font-family:'Space Mono',monospace; font-size:12px;
+    color:var(--muted); border-top:0.5px solid var(--rule); border-bottom:0.5px solid var(--rule);
+    padding:12px 0; margin-bottom:28px;}
+  .meta b{color:var(--ink); font-weight:700;}
+
+  h2{font-family:'Fraunces',serif; font-weight:600; font-size:15px; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--navy); margin:42px 0 4px; display:flex; align-items:center; gap:12px;}
+  h2::before{content:""; width:22px; height:2px; background:var(--amber);}
+  .lead{font-size:19px; line-height:1.6;}
+  .lead .big{font-family:'Fraunces',serif; font-style:italic; color:var(--amber);}
+  p{margin:10px 0;}
+
+  .mapwrap{margin:18px 0 8px; padding:20px 8px 8px; background:#fffdf6; border:0.5px solid var(--rule);}
+  .mapcap{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); text-align:center; margin-top:6px;}
+
+  /* mind map */
+  .mm{display:block; width:100%; height:auto;}
+  .mm line{stroke:#b6a987; stroke-width:1; fill:none;}
+  .mm .spine{stroke:#8d8268; stroke-width:1.6;}
+  .mm text{font-family:'Space Mono',monospace; font-size:12px;}
+  .mm .leaf rect{fill:#fbf7ec; stroke:#cdc1a3; stroke-width:1;}
+  .mm .leaf text{fill:#4a4234;}
+  .mm .branch rect, .mm .root rect{stroke-width:1.2;}
+  .c-teal rect{fill:#E1F5EE; stroke:#0F6E56;} .c-teal text{fill:#04342C;}
+  .c-purple rect{fill:#EEEDFE; stroke:#534AB7;} .c-purple text{fill:#26215C;}
+  .c-amber rect{fill:#FAEEDA; stroke:#854F0B;} .c-amber text{fill:#412402;}
+  .c-coral rect{fill:#FAECE7; stroke:#993C1D;} .c-coral text{fill:#4A1B0C;}
+  .c-blue rect{fill:#E6F1FB; stroke:#185FA5;} .c-blue text{fill:#042C53;}
+  .c-green rect{fill:#EAF3DE; stroke:#3B6D11;} .c-green text{fill:#173404;}
+  .c-gray rect{fill:#ECE7D8; stroke:#5F5E5A;} .c-gray text{fill:#2C2C2A;}
+  .c-pink rect{fill:#FBEAF0; stroke:#993556;} .c-pink text{fill:#4B1528;}
+
+  /* missions */
+  .mission{display:grid; grid-template-columns:64px 1fr; gap:18px; padding:18px 0; border-top:0.5px solid var(--rule);}
+  .mnum{font-family:'Space Mono',monospace; font-weight:700; font-size:30px; color:var(--amber); line-height:1;}
+  .mnum span{display:block; font-size:10px; letter-spacing:.18em; color:var(--muted); margin-top:6px;}
+  .mtitle{font-family:'Fraunces',serif; font-weight:600; font-size:22px; margin:0 0 4px;}
+  .tag{font-family:'Space Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--teal); display:inline-block; margin-bottom:8px;}
+  .mission p{margin:7px 0; font-size:16px;}
+  .shannon{color:var(--stamp); font-style:italic;}
+  .side .mnum{color:var(--navy);}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:14px 34px; margin-top:8px;}
+  ul.gear{list-style:none; padding:0; margin:6px 0; font-size:15.5px;}
+  ul.gear li{padding:5px 0 5px 22px; position:relative; border-bottom:0.5px dotted var(--rule);}
+  ul.gear li::before{content:"\25A0"; position:absolute; left:0; color:var(--amber); font-size:9px; top:8px;}
+  .price{font-family:'Space Mono',monospace; font-size:12px; color:var(--muted); float:right;}
+
+  .timeline{font-family:'Space Mono',monospace; font-size:13px; margin-top:6px;}
+  .timeline div{display:flex; justify-content:space-between; padding:6px 0; border-bottom:0.5px dotted var(--rule);}
+  .timeline b{color:var(--amber); font-weight:700;}
+
+  a{color:var(--teal); text-decoration:none; border-bottom:0.5px solid var(--teal);}
+  .foot{margin-top:48px; padding-top:16px; border-top:1.5px solid var(--rule); font-family:'Space Mono',monospace;
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-align:center;}
+
+  @media (max-width:640px){ .cols{grid-template-columns:1fr} h1{font-size:34px} .mission{grid-template-columns:48px 1fr} }
+  @media print{ body{background:#fff} .frame{box-shadow:none} .mission{break-inside:avoid} }
+</style>
+<style id="hq-nav-style">
+  .hq-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:840px;margin:0 auto;padding:14px 30px 0;font-family:'Space Mono',monospace;}
+  .hq-nav .hq-home{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#0f6e56;text-decoration:none;border:1px solid #bcae8e;border-radius:4px;padding:6px 12px;
+    background:#fbf7ec;transition:background .15s;}
+  .hq-nav .hq-home:hover{background:#e3efe9;}
+  .hq-nav .hq-title{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a5b12;}
+  @media (max-width:560px){ .hq-nav .hq-title{display:none;} }
+  @media print{ .hq-nav{display:none !important;} }
+</style>
+</head>
+<body>
+<nav class="hq-nav">
+  <a class="hq-home" href="index.html">&#9204; Mission HQ</a>
+  <span class="hq-title">Operation: Signals &amp; Secrets</span>
+</nav>
+
+<div class="sheet">
+<div class="frame">
+
+  <div class="topbar">
+    <div>Dossier&nbsp;No. RF&ndash;1948&ndash;C / Cambridge Station</div>
+    <div class="stamp">Classified &middot; Eyes Only</div>
+  </div>
+
+  <h1>Operation:<br>Signals &amp; Secrets</h1>
+  <div class="sub">A Summer Field Manual in Radio, Codes &amp; Information</div>
+
+  <div class="meta">
+    <span><b>Agent:</b> Auggie</span>
+    <span><b>Handler:</b> Dad (ex&ndash;General class)</span>
+    <span><b>Patron:</b> C. E. Shannon</span>
+    <span><b>Duration:</b> ~12 weeks</span>
+    <span><b>Method:</b> Learn by building</span>
+  </div>
+
+  <p class="lead">Every mission this summer asks one question in a different costume: <span class="big">how do you turn a message into a signal, push it across distance, keep yours secret, and break someone else&rsquo;s?</span> That single thread runs from a WWII field radio, through the Bombe at Bletchley, to a radio you will build with your own hands.</p>
+
+  <p>Your patron is <b>Claude Shannon</b> &mdash; the man who proved, with mathematics, exactly what happens when we encode a message, send it, and decode it. He gave the world the <i>bit</i>. He showed which secret codes are truly unbreakable. And he built playful machines for the sheer joy of it &mdash; including <b>Theseus</b>, the maze-solving mouse waiting for you at the MIT Museum, ten minutes from home.</p>
+
+  <h2>The Map</h2>
+  <div class="mapwrap">
+    <svg class="mm" viewBox="0 0 680 710" role="img" aria-label="Detailed mind map of the summer: Claude Shannon and the central idea feed six branches, each with three sub-topics">
+      <line class="spine" x1="100" y1="352" x2="100" y2="372"/>
+      <line x1="180" y1="398" x2="215" y2="87"/>
+      <line x1="180" y1="398" x2="215" y2="193"/>
+      <line x1="180" y1="398" x2="215" y2="299"/>
+      <line x1="180" y1="398" x2="215" y2="405"/>
+      <line x1="180" y1="398" x2="215" y2="511"/>
+      <line x1="180" y1="398" x2="215" y2="617"/>
+      <line x1="390" y1="87" x2="420" y2="53"/><line x1="390" y1="87" x2="420" y2="87"/><line x1="390" y1="87" x2="420" y2="121"/>
+      <line x1="390" y1="193" x2="420" y2="159"/><line x1="390" y1="193" x2="420" y2="193"/><line x1="390" y1="193" x2="420" y2="227"/>
+      <line x1="390" y1="299" x2="420" y2="265"/><line x1="390" y1="299" x2="420" y2="299"/><line x1="390" y1="299" x2="420" y2="333"/>
+      <line x1="390" y1="405" x2="420" y2="371"/><line x1="390" y1="405" x2="420" y2="405"/><line x1="390" y1="405" x2="420" y2="439"/>
+      <line x1="390" y1="511" x2="420" y2="477"/><line x1="390" y1="511" x2="420" y2="511"/><line x1="390" y1="511" x2="420" y2="545"/>
+      <line x1="390" y1="617" x2="420" y2="583"/><line x1="390" y1="617" x2="420" y2="617"/><line x1="390" y1="617" x2="420" y2="651"/>
+
+      <g class="root c-gray"><rect x="20" y="300" width="160" height="52" rx="12"/><text x="100" y="326" text-anchor="middle" dominant-baseline="central">Claude Shannon</text></g>
+      <g class="root c-pink"><rect x="20" y="372" width="160" height="52" rx="12"/><text x="100" y="398" text-anchor="middle" dominant-baseline="central">Signals &amp; secrets</text></g>
+
+      <g class="branch c-teal"><rect x="215" y="65" width="175" height="44" rx="8"/><text x="302" y="87" text-anchor="middle" dominant-baseline="central">Radio &amp; signals</text></g>
+      <g class="leaf"><rect x="420" y="40" width="205" height="26" rx="8"/><text x="522" y="53" text-anchor="middle" dominant-baseline="central">Waves &amp; frequency</text></g>
+      <g class="leaf"><rect x="420" y="74" width="205" height="26" rx="8"/><text x="522" y="87" text-anchor="middle" dominant-baseline="central">Antennas &amp; wavelength</text></g>
+      <g class="leaf"><rect x="420" y="108" width="205" height="26" rx="8"/><text x="522" y="121" text-anchor="middle" dominant-baseline="central">Signal vs. noise</text></g>
+
+      <g class="branch c-purple"><rect x="215" y="171" width="175" height="44" rx="8"/><text x="302" y="193" text-anchor="middle" dominant-baseline="central">Codes &amp; ciphers</text></g>
+      <g class="leaf"><rect x="420" y="146" width="205" height="26" rx="8"/><text x="522" y="159" text-anchor="middle" dominant-baseline="central">Morse &amp; Enigma</text></g>
+      <g class="leaf"><rect x="420" y="180" width="205" height="26" rx="8"/><text x="522" y="193" text-anchor="middle" dominant-baseline="central">Keys &amp; one-time pad</text></g>
+      <g class="leaf"><rect x="420" y="214" width="205" height="26" rx="8"/><text x="522" y="227" text-anchor="middle" dominant-baseline="central">Modern AES</text></g>
+
+      <g class="branch c-amber"><rect x="215" y="277" width="175" height="44" rx="8"/><text x="302" y="299" text-anchor="middle" dominant-baseline="central">Bletchley &amp; WWII</text></g>
+      <g class="leaf"><rect x="420" y="252" width="205" height="26" rx="8"/><text x="522" y="265" text-anchor="middle" dominant-baseline="central">The Bombe</text></g>
+      <g class="leaf"><rect x="420" y="286" width="205" height="26" rx="8"/><text x="522" y="299" text-anchor="middle" dominant-baseline="central">Turing &amp; Shannon</text></g>
+      <g class="leaf"><rect x="420" y="320" width="205" height="26" rx="8"/><text x="522" y="333" text-anchor="middle" dominant-baseline="central">Birth of computing</text></g>
+
+      <g class="branch c-coral"><rect x="215" y="383" width="175" height="44" rx="8"/><text x="302" y="405" text-anchor="middle" dominant-baseline="central">Ham radio</text></g>
+      <g class="leaf"><rect x="420" y="358" width="205" height="26" rx="8"/><text x="522" y="371" text-anchor="middle" dominant-baseline="central">Technician license</text></g>
+      <g class="leaf"><rect x="420" y="392" width="205" height="26" rx="8"/><text x="522" y="405" text-anchor="middle" dominant-baseline="central">Bands &amp; call signs</text></g>
+      <g class="leaf"><rect x="420" y="426" width="205" height="26" rx="8"/><text x="522" y="439" text-anchor="middle" dominant-baseline="central">Morse on the air</text></g>
+
+      <g class="branch c-blue"><rect x="215" y="489" width="175" height="44" rx="8"/><text x="302" y="511" text-anchor="middle" dominant-baseline="central">The LoRa build</text></g>
+      <g class="leaf"><rect x="420" y="464" width="205" height="26" rx="8"/><text x="522" y="477" text-anchor="middle" dominant-baseline="central">Heltec + Meshtastic</text></g>
+      <g class="leaf"><rect x="420" y="498" width="205" height="26" rx="8"/><text x="522" y="511" text-anchor="middle" dominant-baseline="central">Spreading factor</text></g>
+      <g class="leaf"><rect x="420" y="532" width="205" height="26" rx="8"/><text x="522" y="545" text-anchor="middle" dominant-baseline="central">Range test &amp; mesh</text></g>
+
+      <g class="branch c-green"><rect x="215" y="595" width="175" height="44" rx="8"/><text x="302" y="617" text-anchor="middle" dominant-baseline="central">The big ideas</text></g>
+      <g class="leaf"><rect x="420" y="570" width="205" height="26" rx="8"/><text x="522" y="583" text-anchor="middle" dominant-baseline="central">The bit</text></g>
+      <g class="leaf"><rect x="420" y="604" width="205" height="26" rx="8"/><text x="522" y="617" text-anchor="middle" dominant-baseline="central">Probability</text></g>
+      <g class="leaf"><rect x="420" y="638" width="205" height="26" rx="8"/><text x="522" y="651" text-anchor="middle" dominant-baseline="central">Channel capacity</text></g>
+    </svg>
+    <div class="mapcap">Shannon &rarr; the big idea &rarr; six branches &rarr; eighteen things worth knowing</div>
+  </div>
+
+  <h2>The Missions</h2>
+
+  <div class="mission">
+    <div class="mnum">00<span>Recon</span></div>
+    <div>
+      <div class="mtitle">Kickoff at the MIT Museum</div>
+      <div class="tag">Objective &middot; set the frame</div>
+      <p>Go see <b>Theseus</b> in person &mdash; the maze-solving mouse whose brain is relay switches, one of the first self-learning machines ever built. As an alum, tell Auggie the story the labels can&rsquo;t.</p>
+      <p class="shannon">Link to remember: the Bombe you saw at Bletchley and Theseus here are connected by a real wartime meeting between Turing and Shannon.</p>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mnum">01<span>Cipher</span></div>
+    <div>
+      <div class="mtitle">Crack a code by hand</div>
+      <div class="tag">Build &middot; cipher wheel + Python cracker</div>
+      <p>Assemble the cipher wheel, break a message with letter-frequency analysis (Bletchley&rsquo;s real method), then write a short Python script that cracks a Caesar cipher in milliseconds. <i>Start here &mdash; your Codebreaker&rsquo;s Kit is the companion sheet to this dossier.</i></p>
+      <p class="shannon">Shannon layer: try a one-time pad &mdash; a random key as long as the message &mdash; and see why it is <i>provably</i> unbreakable, unlike the cipher you just broke.</p>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mnum">02<span>Signal</span></div>
+    <div>
+      <div class="mtitle">Make a signal you can see</div>
+      <div class="tag">Build &middot; Morse telegraph + SDR receiver</div>
+      <p>Wire a two-station Morse buzzer so a message becomes a signal you can hear. Then plug in an RTL-SDR dongle and watch the whole radio spectrum appear on screen.</p>
+      <p class="shannon">Shannon layer: the noise floor on that screen is exactly what his channel-capacity theorem is about &mdash; a clean signal carries more bits than a buried one.</p>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mnum">03<span>On air</span></div>
+    <div>
+      <div class="mtitle">Get on the air for real</div>
+      <div class="tag">Goal &middot; pass the Technician exam</div>
+      <p>Study the new 2026&ndash;2030 Technician question pool together (free trainer at HamStudy.org), aim for the exam at a local volunteer-examiner session by August, with Dad mentoring. Build and measure an antenna to cash in the wavelength math.</p>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mnum">04<span>Build</span></div>
+    <div>
+      <div class="mtitle">Build the communicator</div>
+      <div class="tag">Build &middot; 2&times; Heltec LoRa, 915 MHz</div>
+      <p>Flash Meshtastic for the instant win, then re-flash with Arduino so Auggie can change the spreading factor and watch range trade against speed. Log signal strength versus distance and graph it.</p>
+      <p class="shannon">Shannon layer: that range-versus-speed tradeoff <i>is</i> his capacity theorem, made physical &mdash; and the graph is his theorem drawn from your own data.</p>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mnum">05<span>Field op</span></div>
+    <div>
+      <div class="mtitle">The field operation</div>
+      <div class="tag">Capstone &middot; everything at once</div>
+      <p>Encrypt a message (a one-time pad <i>and</i> the AES on the LoRa channel &mdash; two eras of secrecy stacked), transmit it point-to-point across a park or between hilltops, log the signal stats, decode at the far end, and pass a fragment by Morse over the ham radios.</p>
+    </div>
+  </div>
+
+  <div class="mission side">
+    <div class="mnum">S<span>Side quest</span></div>
+    <div>
+      <div class="mtitle">Build a Shannon contraption</div>
+      <div class="tag">For fun &middot; one afternoon</div>
+      <p>Honor his playful side: build a &ldquo;useless box&rdquo; &mdash; a box whose only function is a little arm that reaches out to switch itself off. A servo, a switch, a battery. Pure Shannon.</p>
+    </div>
+  </div>
+
+  <h2>Standard Issue (Gear)</h2>
+  <div class="cols">
+    <ul class="gear">
+      <li>2&times; Heltec WiFi LoRa 32 V3 &mdash; <b>915 MHz</b> <span class="price">~$25 ea</span></li>
+      <li>2&times; antennas + USB-C cables <span class="price">incl.</span></li>
+      <li>2&times; small LiPo batteries <span class="price">~$8 ea</span></li>
+      <li>RTL-SDR USB dongle <span class="price">~$30</span></li>
+    </ul>
+    <ul class="gear">
+      <li>Buzzer, wire, battery, breadboard <span class="price">~$15</span></li>
+      <li>Cardstock + a brad pin (cipher wheel) <span class="price">~$3</span></li>
+      <li>Hobby servo, switch, battery (useless box) <span class="price">~$12</span></li>
+      <li>Laptop w/ Arduino IDE + 2 phones <span class="price">on hand</span></li>
+    </ul>
+  </div>
+
+  <h2>Rough Tour of Duty</h2>
+  <div class="timeline">
+    <div><span>Weeks 1&ndash;2 &middot; Recon + Cipher</span><b>Missions 00 &ndash; 01</b></div>
+    <div><span>Weeks 3&ndash;4 &middot; Signals + SDR</span><b>Mission 02</b></div>
+    <div><span>Weeks 4&ndash;8 &middot; License study (overlaps)</span><b>Mission 03 &rarr; exam</b></div>
+    <div><span>Weeks 7&ndash;9 &middot; LoRa build + range tests</span><b>Mission 04</b></div>
+    <div><span>Weeks 10&ndash;12 &middot; Field op + side quest</span><b>Mission 05 + S</b></div>
+  </div>
+
+  <h2>Field References</h2>
+  <p style="font-size:15.5px">
+    MIT Museum, Kendall Square, Cambridge (Theseus on view) &middot;
+    <a href="https://hamstudy.org">HamStudy.org</a> (free Technician trainer, 2026&ndash;2030 pool) &middot;
+    Meshtastic web flasher (Chrome/Edge) &middot;
+    ARRL Technician License Manual (2026&ndash;2030 edition).
+  </p>
+
+  <div class="foot">End of dossier &middot; Cambridge Station &middot; Trust the signal, question the noise</div>
+
+</div>
+</div>
+</body>
+</html>

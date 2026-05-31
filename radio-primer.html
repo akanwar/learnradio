@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radio Primer — Waves, Frequency &amp; Antennas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecdd; --panel:#fbf7ec; --ink:#221f1a; --muted:#6a6151; --rule:#bcae8e;
+    --amber:#9a5b12; --teal:#0f6e56; --stamp:#9a2d22; --navy:#22324a; --accent:#0f6e56;
+    --grayrod:#6a6151;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Spectral',Georgia,serif; font-size:16.5px; line-height:1.62;}
+  .sheet{max-width:840px; margin:0 auto; padding:40px 24px 64px;}
+  .page{border:1.5px solid var(--rule); padding:32px 38px 40px; background:var(--panel); position:relative;
+    box-shadow:0 16px 46px -32px rgba(34,31,26,.5); margin-bottom:44px;}
+  .page::before{content:""; position:absolute; inset:7px; border:.5px solid var(--rule); pointer-events:none;}
+  .page::after{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--accent); opacity:.85;}
+
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; font-family:'Space Mono',monospace;
+    font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .stamp{border:2px solid var(--stamp); color:var(--stamp); padding:5px 10px; transform:rotate(2.5deg);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:10.5px; letter-spacing:.14em; border-radius:3px; opacity:.85;}
+
+  h1{font-family:'Fraunces',serif; font-weight:900; font-size:38px; line-height:1.04; margin:20px 0 2px; letter-spacing:-.01em;}
+  .sub{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:18px;}
+  .lead{font-size:17.5px; border-top:.5px solid var(--rule); border-bottom:.5px solid var(--rule); padding:12px 0; margin-bottom:8px;}
+
+  h2{font-family:'Fraunces',serif; font-weight:600; font-size:15px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--navy); margin:30px 0 4px; display:flex; align-items:center; gap:10px;}
+  h2::before{content:""; width:20px; height:2px; background:var(--accent);}
+  p{margin:9px 0;} b{font-weight:600;}
+
+  .fig{margin:16px 0 6px; padding:16px 10px 8px; background:#fffdf6; border:.5px solid var(--rule);}
+  .fig svg{display:block; width:100%; height:auto;}
+  .figcap{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); text-align:center; margin-top:8px;}
+
+  .eq{font-family:'Space Mono',monospace; font-weight:700; font-size:20px; color:var(--navy); text-align:center;
+    background:#efe7d4; border:.5px solid var(--rule); border-radius:6px; padding:14px 10px; margin:14px 0;}
+  .eq small{display:block; font-weight:400; font-size:12px; color:var(--muted); letter-spacing:.04em; margin-top:6px; text-transform:none;}
+
+  .keyrow{display:grid; grid-template-columns:1fr 1fr; gap:10px 26px; margin:10px 0;}
+  .key{border-left:3px solid var(--accent); border-radius:0; padding:6px 0 6px 12px; background:transparent;}
+  .key .term{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal);}
+  .key .def{font-size:15px;}
+
+  .shannon{background:#fffdf6; border:.5px solid var(--rule); border-left:3px solid var(--stamp); padding:11px 15px;
+    margin:16px 0; font-size:15px;}
+  .shannon b{color:var(--stamp);}
+  .takeaway{background:#e3efe9; border:.5px solid #8fc3ad; border-radius:6px; padding:13px 16px; margin:18px 0 4px; font-size:15.5px;}
+  .takeaway .term{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); display:block; margin-bottom:4px;}
+  .note{font-size:13px; color:var(--muted); font-style:italic; margin-top:16px; padding-top:10px; border-top:.5px solid var(--rule);}
+  .note b{font-style:normal; color:var(--stamp);}
+
+  /* svg helpers */
+  .wt{font-family:'Space Mono',monospace; font-size:13px; font-weight:700; fill:var(--navy);}
+  .wts{font-family:'Space Mono',monospace; font-size:11px; fill:var(--muted);}
+  .axis{stroke:var(--grayrod); stroke-width:1;}
+  .dash{stroke:var(--grayrod); stroke-width:.6; stroke-dasharray:3 3; opacity:.6;}
+
+  @media (max-width:640px){ .keyrow{grid-template-columns:1fr} h1{font-size:30px} }
+  @media print{
+    body{background:#fff} .sheet{padding:0}
+    .page{box-shadow:none; margin:0; border-width:1px; page-break-after:always; min-height:96vh;}
+    .fig, .eq, .shannon, .takeaway{break-inside:avoid;}
+    h2{break-after:avoid;}
+  }
+</style>
+<style id="hq-nav-style">
+  .hq-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:840px;margin:0 auto;padding:14px 30px 0;font-family:'Space Mono',monospace;}
+  .hq-nav .hq-home{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#0f6e56;text-decoration:none;border:1px solid #bcae8e;border-radius:4px;padding:6px 12px;
+    background:#fbf7ec;transition:background .15s;}
+  .hq-nav .hq-home:hover{background:#e3efe9;}
+  .hq-nav .hq-title{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a5b12;}
+  @media (max-width:560px){ .hq-nav .hq-title{display:none;} }
+  @media print{ .hq-nav{display:none !important;} }
+</style>
+</head>
+<body>
+<nav class="hq-nav">
+  <a class="hq-home" href="index.html">&#9204; Mission HQ</a>
+  <span class="hq-title">Operation: Signals &amp; Secrets</span>
+</nav>
+
+<div class="sheet">
+
+  <!-- PAGE 1 — WAVES & FREQUENCY -->
+  <div class="page">
+    <div class="topbar"><div>Radio Primer / Branch: Radio &amp; Signals</div><div class="stamp">Reference</div></div>
+    <h1>The Radio Primer</h1>
+    <div class="sub">Part 1 &middot; Waves &amp; Frequency</div>
+
+    <div class="lead">Before a single secret message can travel, something has to carry it across the empty air. That something is a <b>radio wave</b> &mdash; and it obeys one tidy equation you can do in your head.</div>
+
+    <h2>What a radio wave is</h2>
+    <p>A radio wave is a ripple of electric and magnetic energy rolling through space. Unlike a wave on water, it needs <b>nothing</b> to travel through &mdash; it crosses an empty vacuum just fine &mdash; and it always moves at the fastest speed there is, the <b>speed of light</b>: about 300 million metres every second. Scientists write that speed as the letter <i>c</i>:</p>
+    <p style="text-align:center; font-family:'Space Mono',monospace; font-size:15px; color:var(--navy)">c &asymp; 300,000,000 m/s = 3 &times; 10<tspan>8</tspan> m/s</p>
+
+    <p>Every wave is described by just two numbers, and this picture names them both. The <b>wavelength</b> is the distance from one crest to the next. The <b>frequency</b> is how many crests rush past you each second.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 660 330" role="img" aria-label="Two waves drawn the same width; the top has a long wavelength and low frequency, the bottom a short wavelength and high frequency">
+        <line x1="75" y1="105" x2="600" y2="105" class="dash"/>
+        <line x1="75" y1="250" x2="600" y2="250" class="dash"/>
+
+        <path fill="none" stroke="#0F6E56" stroke-width="2.4" d="M75,105 C107,40 139,40 171,105 C203,170 235,170 267,105 C299,40 331,40 363,105 C395,170 427,170 459,105 C491,40 523,40 555,105 C571,137 587,137 600,112"/>
+
+        <path fill="none" stroke="#534AB7" stroke-width="2.4" d="M75,250 C88,210 101,210 114,250 C127,290 140,290 153,250 C166,210 179,210 192,250 C205,290 218,290 231,250 C244,210 257,210 270,250 C283,290 296,290 309,250 C322,210 335,210 348,250 C361,290 374,290 387,250 C400,210 413,210 426,250 C439,290 452,290 465,250 C478,210 491,210 504,250 C517,290 530,290 543,250 C556,210 569,210 582,250 C589,270 595,270 600,262"/>
+
+        <line x1="171" y1="52" x2="171" y2="105" class="dash"/>
+        <line x1="363" y1="52" x2="363" y2="105" class="dash"/>
+        <line x1="171" y1="46" x2="363" y2="46" stroke="#9a5b12" stroke-width="1"/>
+        <path d="M177 42 L171 46 L177 50" fill="none" stroke="#9a5b12" stroke-width="1"/>
+        <path d="M357 42 L363 46 L357 50" fill="none" stroke="#9a5b12" stroke-width="1"/>
+        <text class="wts" x="267" y="38" text-anchor="middle">one wavelength (&lambda;)</text>
+        <text class="wt" x="337" y="160" text-anchor="middle">low frequency &middot; long wave</text>
+
+        <line x1="114" y1="200" x2="114" y2="250" class="dash"/>
+        <line x1="153" y1="200" x2="153" y2="250" class="dash"/>
+        <line x1="114" y1="194" x2="153" y2="194" stroke="#9a5b12" stroke-width="1"/>
+        <text class="wts" x="133" y="186" text-anchor="middle">&lambda;</text>
+        <text class="wt" x="337" y="312" text-anchor="middle">high frequency &middot; short wave</text>
+      </svg>
+      <div class="figcap">Same width, same speed &mdash; the bottom wave just packs in more cycles</div>
+    </div>
+
+    <div class="keyrow">
+      <div class="key"><div class="term">Wavelength · &lambda; "lambda"</div><div class="def">Distance crest-to-crest, in metres.</div></div>
+      <div class="key"><div class="term">Frequency · f</div><div class="def">Crests per second, in hertz (Hz). Radios use millions (MHz) and billions (GHz).</div></div>
+    </div>
+
+    <h2>The one equation</h2>
+    <div class="eq">c = f &times; &lambda;
+      <small>speed of light = frequency &times; wavelength</small></div>
+
+    <p>Because the speed <i>c</i> is locked, frequency and wavelength sit on a <b>see-saw</b>: push one up and the other must drop. High frequency forces a short wave; low frequency means a long one. Rearrange the equation to find the wavelength of any band:</p>
+
+    <div class="eq">&lambda; = c &divide; f
+      <small>for LoRa: 300,000,000 &divide; 915,000,000 &asymp; 0.33 m (about 33 cm)</small></div>
+
+    <div class="fig">
+      <svg viewBox="0 0 660 250" role="img" aria-label="Four bands ordered by frequency: AM 300 metres, FM 3 metres, LoRa 33 centimetres, Wi-Fi 12 centimetres">
+        <rect x="40" y="30" width="130" height="74" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width=".6"/>
+        <text class="wt" x="105" y="52" text-anchor="middle">AM radio</text>
+        <text class="wts" x="105" y="72" text-anchor="middle">~1 MHz</text>
+        <text class="wts" x="105" y="90" text-anchor="middle">&lambda; &asymp; 300 m</text>
+
+        <rect x="186" y="30" width="130" height="74" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width=".6"/>
+        <text class="wt" x="251" y="52" text-anchor="middle">FM radio</text>
+        <text class="wts" x="251" y="72" text-anchor="middle">~100 MHz</text>
+        <text class="wts" x="251" y="90" text-anchor="middle">&lambda; &asymp; 3 m</text>
+
+        <rect x="332" y="30" width="130" height="74" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="1.4"/>
+        <text class="wt" x="397" y="52" text-anchor="middle" fill="#412402">LoRa</text>
+        <text class="wts" x="397" y="72" text-anchor="middle" fill="#633806">915 MHz</text>
+        <text class="wts" x="397" y="90" text-anchor="middle" fill="#633806">&lambda; &asymp; 33 cm</text>
+
+        <rect x="478" y="30" width="130" height="74" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width=".6"/>
+        <text class="wt" x="543" y="52" text-anchor="middle">Wi-Fi</text>
+        <text class="wts" x="543" y="72" text-anchor="middle">2.4 GHz</text>
+        <text class="wts" x="543" y="90" text-anchor="middle">&lambda; &asymp; 12 cm</text>
+
+        <line x1="40" y1="150" x2="600" y2="150" stroke="#6a6151" stroke-width="1"/>
+        <path d="M594 145 L600 150 L594 155" fill="none" stroke="#6a6151" stroke-width="1"/>
+        <text class="wts" x="40" y="172" text-anchor="start">low frequency &middot; long &lambda;</text>
+        <text class="wts" x="600" y="172" text-anchor="end">high frequency &middot; short &lambda;</text>
+      </svg>
+      <div class="figcap">Every band lives somewhere on the see-saw</div>
+    </div>
+
+    <div class="note"><b>Try it:</b> tune the SDR (Mission 02) to an FM station near 100 MHz and work out its wavelength &mdash; about 3 metres. Then ask: how long should its antenna be? Part 2 has the answer.</div>
+  </div>
+
+  <!-- PAGE 2 — ANTENNAS & WAVELENGTH -->
+  <div class="page">
+    <div class="topbar"><div>Radio Primer / Branch: Radio &amp; Signals</div><div class="stamp">Reference</div></div>
+    <h1>The Radio Primer</h1>
+    <div class="sub">Part 2 &middot; Antennas &amp; Wavelength</div>
+
+    <div class="lead">An antenna looks like a plain bit of wire. It isn&rsquo;t. Its <b>length</b> is a calculation &mdash; the wavelength you just worked out, turned into metal.</div>
+
+    <h2>Why length is everything</h2>
+    <p>An antenna works best when its length is a simple fraction of the wavelength &mdash; usually a <b>quarter</b> (&lambda; &divide; 4) or a <b>half</b> (&lambda; &divide; 2). When the length matches, the wave and the metal push each other in perfect rhythm. Engineers call this <b>resonance</b>, and you already know it in your body:</p>
+
+    <div class="takeaway"><span class="term">The swing analogy</span>Pumping a playground swing only works if you push at the <b>right moment</b> in each cycle. Push in rhythm and a tiny effort builds a huge arc; push at random and you go nowhere. An antenna cut to the right fraction of &lambda; is &ldquo;pushing&rdquo; the radio wave at exactly the right moment. It&rsquo;s timing, not force.</div>
+
+    <h2>The Heltec antenna, to scale</h2>
+    <p>For Auggie&rsquo;s 915 MHz radio, &lambda; &asymp; 33 cm, so a quarter wavelength is 33 &divide; 4 &asymp; <b>8 cm</b>. That is almost exactly the length of the little antenna that screws onto the board. Nobody picked that size at random &mdash; it&rsquo;s the number you calculated, made real.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 660 330" role="img" aria-label="Three rods to scale on a ground line: full wavelength 33 cm, half-wave 16 cm, and the quarter-wave 8 cm Heltec antenna">
+        <line x1="60" y1="285" x2="600" y2="285" stroke="#6a6151" stroke-width="1"/>
+
+        <rect x="150" y="55" width="11" height="230" rx="4" fill="#D3D1C7" stroke="#5F5E5A" stroke-width=".6"/>
+        <circle cx="155.5" cy="55" r="5" fill="#888780"/>
+        <text class="wt" x="155" y="42" text-anchor="middle">&lambda; &asymp; 33 cm</text>
+        <text class="wts" x="155" y="306" text-anchor="middle">full wavelength</text>
+
+        <rect x="345" y="170" width="11" height="115" rx="4" fill="#D3D1C7" stroke="#5F5E5A" stroke-width=".6"/>
+        <circle cx="350.5" cy="170" r="5" fill="#888780"/>
+        <text class="wt" x="350" y="157" text-anchor="middle">&frac12;&lambda; &asymp; 16 cm</text>
+        <text class="wts" x="350" y="306" text-anchor="middle">half-wave dipole</text>
+
+        <rect x="520" y="227" width="11" height="58" rx="4" fill="#EF9F27" stroke="#854F0B" stroke-width="1.2"/>
+        <circle cx="525.5" cy="227" r="5" fill="#BA7517"/>
+        <text class="wt" x="525" y="214" text-anchor="middle" fill="#633806">&frac14;&lambda; &asymp; 8 cm</text>
+        <text class="wts" x="525" y="306" text-anchor="middle" fill="#633806">the Heltec antenna</text>
+      </svg>
+      <div class="figcap">Drawn to scale &mdash; the antenna is a small fraction of the wave it catches</div>
+    </div>
+
+    <h2>The same rule, everywhere you look</h2>
+    <p>This one idea explains antennas all around the house:</p>
+    <div class="keyrow">
+      <div class="key"><div class="term">AM towers · ~1 MHz</div><div class="def">&lambda; = 300 m, so the quarter-wave antenna is a giant 75 m tower &mdash; the ones you see from the highway.</div></div>
+      <div class="key"><div class="term">Phone Wi-Fi · 2.4 GHz</div><div class="def">&lambda; = 12 cm, so a 3 cm antenna hides inside the case.</div></div>
+    </div>
+    <p>And <b>915 MHz LoRa sits in a sweet spot</b>: the antenna is small enough to pocket, but the frequency is low enough that the waves travel far and bend around buildings and trees better than Wi-Fi can. That balance is a big reason LoRa reaches for kilometres on a tiny battery.</p>
+
+    <div class="shannon"><b>The thread to remember.</b> Wavelength is the bridge between the two halves of this primer. Frequency <i>sets</i> the wavelength (&lambda; = c &divide; f), and the wavelength <i>sets</i> the antenna (about &lambda; &divide; 4). Learn that chain once and you can predict the size of almost any antenna you&rsquo;ll ever meet.</div>
+
+    <div class="note"><b>Field exercise (Mission 03):</b> cut a wire to 8 cm, then to 16 cm, and compare how each performs on the radio. Then do the third idea on this branch &mdash; <em>signal vs. noise</em> &mdash; with the range-test log in the Mission 02 pack, where Shannon&rsquo;s noise floor is waiting.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation: Signals &amp; Secrets — Mission Briefing Packet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecdd; --panel:#fbf7ec; --ink:#221f1a; --muted:#6a6151; --rule:#bcae8e;
+    --amber:#9a5b12; --teal:#0f6e56; --stamp:#9a2d22; --navy:#22324a; --accent:#9a5b12;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Spectral',Georgia,serif; font-size:16.5px; line-height:1.62;
+    background-image:radial-gradient(circle at 12% 6%, rgba(154,91,18,.04), transparent 40%),
+                     radial-gradient(circle at 88% 94%, rgba(34,50,74,.04), transparent 42%);}
+  .sheet{max-width:840px; margin:0 auto; padding:40px 24px 64px;}
+
+  .brief{border:1.5px solid var(--rule); padding:30px 36px 38px; background:var(--panel); position:relative;
+    box-shadow:0 16px 46px -32px rgba(34,31,26,.5); margin-bottom:44px;}
+  .brief::before{content:""; position:absolute; inset:7px; border:.5px solid var(--rule); pointer-events:none;}
+  .brief::after{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--accent); opacity:.85;}
+
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; font-family:'Space Mono',monospace;
+    font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .stamp{border:2px solid var(--stamp); color:var(--stamp); padding:5px 10px; transform:rotate(2.5deg);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:10.5px; letter-spacing:.14em; border-radius:3px; opacity:.85;}
+
+  .head{display:flex; align-items:baseline; gap:18px; margin:20px 0 2px;}
+  .mno{font-family:'Space Mono',monospace; font-weight:700; font-size:40px; color:var(--accent); line-height:.9;}
+  .mname{font-family:'Fraunces',serif; font-weight:900; font-size:34px; line-height:1.02; letter-spacing:-.01em;}
+  .codename{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted); margin:2px 0 16px;}
+
+  .objective{font-size:18px; line-height:1.55; border-top:.5px solid var(--rule); border-bottom:.5px solid var(--rule);
+    padding:12px 0; margin-bottom:18px;}
+  .objective b{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); display:block; margin-bottom:3px;}
+
+  h3{font-family:'Fraunces',serif; font-weight:600; font-size:13.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--navy); margin:24px 0 4px; display:flex; align-items:center; gap:10px;}
+  h3::before{content:""; width:18px; height:2px; background:var(--accent);}
+  p{margin:8px 0;}
+  ol.ops{margin:8px 0; padding-left:0; counter-reset:op; list-style:none;}
+  ol.ops li{position:relative; padding:7px 0 7px 40px; border-bottom:.5px dotted var(--rule);}
+  ol.ops li::before{counter-increment:op; content:counter(op); position:absolute; left:0; top:7px;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; color:#fff; background:var(--accent);
+    width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+
+  .shannon{background:#fffdf6; border:.5px solid var(--rule); border-left:3px solid var(--stamp); padding:11px 15px;
+    margin:16px 0; font-size:15px;}
+  .shannon b{color:var(--stamp); font-style:normal;}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:10px 30px; margin-top:6px;}
+  .box{}
+  .box h3{margin-top:14px;}
+  ul.list{list-style:none; padding:0; margin:4px 0; font-size:14.5px;}
+  ul.list li{padding:4px 0 4px 18px; position:relative; border-bottom:.5px dotted var(--rule);}
+  ul.list li::before{content:"\25A0"; position:absolute; left:0; top:7px; color:var(--accent); font-size:8px;}
+  ul.check li::before{content:"\2610"; font-size:13px; top:3px; color:var(--teal);}
+
+  .note{font-size:13.5px; color:var(--muted); font-style:italic; margin-top:14px; padding-top:10px;
+    border-top:.5px solid var(--rule);}
+  .note b{font-style:normal; color:var(--stamp);}
+
+  /* per-mission accents */
+  .m-recon{--accent:#5f5e5a;}
+  .m-cipher{--accent:#534ab7;}
+  .m-signal{--accent:#0f6e56;}
+  .m-onair{--accent:#993c1d;}
+  .m-build{--accent:#185fa5;}
+  .m-field{--accent:#993556;}
+  .m-side{--accent:#3b6d11;}
+
+  .cover{border:none; box-shadow:none; background:none; text-align:center; padding:30px 20px 6px;}
+  .cover::before,.cover::after{display:none;}
+  .cover h1{font-family:'Fraunces',serif; font-weight:900; font-size:38px; margin:6px 0 4px;}
+  .cover .sub{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--amber);}
+  .cover p{max-width:560px; margin:14px auto; color:var(--muted);}
+
+  @media (max-width:640px){ .cols{grid-template-columns:1fr} .mname{font-size:26px} .mno{font-size:32px} }
+  @media print{
+    body{background:#fff} .sheet{padding:0}
+    .brief{box-shadow:none; margin:0; border-width:1px; page-break-after:always; min-height:96vh;}
+    .cover{page-break-after:always;}
+    ol.ops li, .shannon, .box{break-inside:avoid;}
+  }
+</style>
+<style id="hq-nav-style">
+  .hq-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:840px;margin:0 auto;padding:14px 30px 0;font-family:'Space Mono',monospace;}
+  .hq-nav .hq-home{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#0f6e56;text-decoration:none;border:1px solid #bcae8e;border-radius:4px;padding:6px 12px;
+    background:#fbf7ec;transition:background .15s;}
+  .hq-nav .hq-home:hover{background:#e3efe9;}
+  .hq-nav .hq-title{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a5b12;}
+  @media (max-width:560px){ .hq-nav .hq-title{display:none;} }
+  @media print{ .hq-nav{display:none !important;} }
+</style>
+</head>
+<body>
+<nav class="hq-nav">
+  <a class="hq-home" href="index.html">&#9204; Mission HQ</a>
+  <span class="hq-title">Operation: Signals &amp; Secrets</span>
+</nav>
+
+<div class="sheet">
+
+  <!-- COVER -->
+  <div class="brief cover">
+    <div class="sub">Operation: Signals &amp; Secrets</div>
+    <h1>Mission Briefing Packet</h1>
+    <div class="sub" style="color:var(--muted)">Seven sealed orders &middot; Agent Auggie &middot; Handler: Dad</div>
+    <p>One brief per mission. Read each only when the previous is complete. Each sheet tells you the objective, the field operations, what Shannon has to do with it, the gear to draw, and how you&rsquo;ll know the mission succeeded. Trust the signal, question the noise.</p>
+  </div>
+
+  <!-- MISSION 00 -->
+  <div class="brief m-recon">
+    <div class="topbar"><div>Brief 00 / Cambridge Station</div><div class="stamp">Recon</div></div>
+    <div class="head"><div class="mno">00</div><div class="mname">First Light</div></div>
+    <div class="codename">Codename: Recon &middot; The Patron&rsquo;s Mouse</div>
+    <div class="objective"><b>Objective</b>Stand in front of the machine that started it all, and meet the patron of the whole summer.</div>
+
+    <h3>Briefing</h3>
+    <p>Before you build anything, you need to know whose footsteps you&rsquo;re following. <b>Claude Shannon</b> figured out the mathematics of every message ever sent &mdash; he gave the world the <i>bit</i>. During WWII he met Alan Turing, the Bletchley codebreaker, and that conversation launched Shannon&rsquo;s work on secret codes. He also built playful machines, including <b>Theseus</b>, a mechanical mouse that learns a maze and remembers the way out. Its &ldquo;brain&rdquo; is just telephone relay switches. The original is on display at the MIT Museum &mdash; ten minutes from home, in the institute your Handler attended.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Travel to the MIT Museum in Kendall Square. Find Theseus.</li>
+      <li>Watch how it &ldquo;remembers&rdquo; a path it has already solved. Ask: where is the memory actually stored?</li>
+      <li>Handler&rsquo;s briefing: hear the story the labels don&rsquo;t tell &mdash; the bit, the Turing meeting, why a master&rsquo;s thesis changed the world.</li>
+      <li>Make the connection out loud: the Bombe you saw at Bletchley and this mouse are linked by one real wartime friendship.</li>
+      <li>Debrief over food. Sketch how a relay works from memory.</li>
+    </ol>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>Field notebook + pencil</li><li>Museum admission</li><li>One curious agent</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>You can explain what a relay does</li><li>You can say why Theseus &ldquo;remembers&rdquo;</li><li>You can link the Bombe to the mouse</li></ul></div>
+    </div>
+    <div class="note"><b>Handler note:</b> No gadgets yet on purpose. This mission is about awe &mdash; the feeling that the whole summer is one continuous story you&rsquo;re about to join.</div>
+  </div>
+
+  <!-- MISSION 01 -->
+  <div class="brief m-cipher">
+    <div class="topbar"><div>Brief 01 / Cambridge Station</div><div class="stamp">Cipher</div></div>
+    <div class="head"><div class="mno">01</div><div class="mname">The Secret Life of Letters</div></div>
+    <div class="codename">Codename: Cipher &middot; Companion sheet: Codebreaker&rsquo;s Kit</div>
+    <div class="objective"><b>Objective</b>Hide a message so no one can read it &mdash; then break one that someone tried to hide from you.</div>
+
+    <h3>Briefing</h3>
+    <p>Long before radios, every secret came down to scrambling letters. Today you build the tool the spies used, learn the weapon the codebreakers used against it, and crack a real intercept. Then you meet the one code that can never be broken. Your printed <b>Codebreaker&rsquo;s Kit</b> is the hands-on half of this mission &mdash; keep it beside you.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Build the cipher wheel from the Kit. Send each other messages with a secret shift.</li>
+      <li>Learn <b>frequency analysis</b>: count the letters, the most common one is probably a hidden E.</li>
+      <li>Crack the first intercept in the Kit using only the frequency trick. Report the decoded order to your Handler.</li>
+      <li>Write the <b>Python Caesar-cracker</b> together &mdash; watch a computer break in milliseconds what you just did by hand.</li>
+      <li>Try a <b>one-time pad</b>: a random key, as long as the message, a different shift for every letter.</li>
+    </ol>
+
+    <div class="shannon"><b>Shannon&rsquo;s twist.</b> Your Caesar cipher breaks because each letter always hides the same way. Shannon proved the one-time pad has <i>perfect secrecy</i> &mdash; truly unbreakable &mdash; but only if you and your partner share the exact same secret key. That key-sharing problem is the hardest part of every secret in history.</div>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>Printed Codebreaker&rsquo;s Kit</li><li>Scissors + a brad (split pin)</li><li>Laptop with Python</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>You cracked the intercept by hand</li><li>The Python cracker runs</li><li>You can explain the one-time pad&rsquo;s catch</li></ul></div>
+    </div>
+    <div class="note"><b>Handler note:</b> Resist giving the shift away. The struggle <em>is</em> the lesson &mdash; the reveal is on the Kit for emergencies only.</div>
+  </div>
+
+  <!-- MISSION 02 -->
+  <div class="brief m-signal">
+    <div class="topbar"><div>Brief 02 / Cambridge Station</div><div class="stamp">Signal</div></div>
+    <div class="head"><div class="mno">02</div><div class="mname">Make It Visible</div></div>
+    <div class="codename">Codename: Signal &middot; From wire to airwaves</div>
+    <div class="objective"><b>Objective</b>Turn a message into a signal you can hear, then see invisible radio waves on a screen.</div>
+
+    <h3>Briefing</h3>
+    <p>A code hides <i>what</i> a message says. A signal is <i>how</i> it travels. First you&rsquo;ll send Morse down a wire and feel a message become electricity. Then comes the best $30 of the summer: a small USB radio receiver (an <b>RTL-SDR</b>) that turns your laptop into a window onto the entire radio spectrum &mdash; aircraft, weather, FM, hams &mdash; all the invisible traffic in the air around your house, suddenly visible.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Build a two-station Morse telegraph: battery, buzzer, wire, and a key made from a clothespin.</li>
+      <li>Learn five Morse letters. Send your name room to room.</li>
+      <li>Plug in the RTL-SDR. Install the receiver software with your Handler.</li>
+      <li>Tune across the spectrum. Find an FM station, then find the quiet hiss between stations &mdash; that&rsquo;s <b>noise</b>.</li>
+      <li>On the waterfall display, point to where a strong signal stands above the noise floor.</li>
+    </ol>
+
+    <div class="shannon"><b>Shannon&rsquo;s twist.</b> That gap between a signal and the noise floor has a name: <b>signal-to-noise ratio</b>. Shannon proved it sets a hard speed limit &mdash; the <i>channel capacity</i> &mdash; on how many bits a channel can carry. A clean signal carries more than a buried one. You&rsquo;ll measure this for real in Mission 04.</div>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>Buzzer, wire, 1.5&ndash;9V battery</li><li>Clothespin + thumbtacks (the key)</li><li>RTL-SDR USB dongle + laptop</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>You sent your name in Morse</li><li>You found a live signal on the SDR</li><li>You can point to signal vs. noise</li></ul></div>
+    </div>
+    <div class="note"><b>Safety:</b> Battery circuits only &mdash; nothing that plugs into a wall. The SDR only <em>listens</em>; it never transmits, so it&rsquo;s legal for an unlicensed agent. Transmitting comes after Mission 03.</div>
+  </div>
+
+  <!-- MISSION 03 -->
+  <div class="brief m-onair">
+    <div class="topbar"><div>Brief 03 / Cambridge Station</div><div class="stamp">On Air</div></div>
+    <div class="head"><div class="mno">03</div><div class="mname">Earn Your Callsign</div></div>
+    <div class="codename">Codename: On Air &middot; The licensed operator</div>
+    <div class="objective"><b>Objective</b>Pass the FCC Technician exam and get legally on the air &mdash; with a real callsign of your own.</div>
+
+    <h3>Briefing</h3>
+    <p>So far you&rsquo;ve only listened. To <i>transmit</i> on the ham bands you need a license &mdash; and you can earn one. The <b>Technician</b> exam is 35 multiple-choice questions drawn from a public pool, and a brand-new 2026&ndash;2030 pool takes effect July 1, so you&rsquo;ll study only current material. Your Handler held a General-class license and can mentor every step, and once you pass, get on the air with you.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Make a free account at HamStudy.org. Take the practice exam cold to see the starting line.</li>
+      <li>Study a little daily &mdash; the trainer repeats the questions you miss. Pair it with the ARRL Technician manual.</li>
+      <li>Build and measure a simple antenna; cash in the wavelength math (&lambda; = speed &divide; frequency).</li>
+      <li>Find a local volunteer-examiner (VE) test session. Register to sit the exam.</li>
+      <li>Pass the Technician exam. Receive your callsign. Make your first supervised contact.</li>
+    </ol>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>HamStudy.org (free)</li><li>ARRL Technician manual, 2026&ndash;2030</li><li>A handheld radio (Handler&rsquo;s)</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>Practice scores clear 85%</li><li>You pass the Technician exam</li><li>You make a first contact on air</li></ul></div>
+    </div>
+    <div class="note"><b>Rule of the air:</b> Never transmit on the ham bands until your callsign is issued &mdash; that&rsquo;s the law. Until then, supervised practice on the Handler&rsquo;s license only. This is the longest mission; start it early and let it run alongside the others.</div>
+  </div>
+
+  <!-- MISSION 04 -->
+  <div class="brief m-build">
+    <div class="topbar"><div>Brief 04 / Cambridge Station</div><div class="stamp">Build</div></div>
+    <div class="head"><div class="mno">04</div><div class="mname">Build the Communicator</div></div>
+    <div class="codename">Codename: Build &middot; LoRa, 915 MHz</div>
+    <div class="objective"><b>Objective</b>Build a pair of long-range radios from scratch and prove Shannon&rsquo;s limit with your own data.</div>
+
+    <h3>Briefing</h3>
+    <p>Now everything converges. Two small boards &mdash; <b>Heltec WiFi LoRa 32 V3</b>, the US 915 MHz version &mdash; become a working point-to-point communicator that needs no cell signal or internet. You&rsquo;ll get the instant win first, then open the hood and start changing the radio&rsquo;s settings to watch the laws of information play out.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Order two Heltec V3 boards &mdash; confirm <b>915 MHz</b>, not 868 (wrong band = nothing works).</li>
+      <li>Flash both with <b>Meshtastic</b> using the web flasher. Pair each to a phone. Send your first off-grid message.</li>
+      <li>Re-flash with Arduino + RadioLib for the real lesson: a messenger you control.</li>
+      <li>Change the <b>spreading factor</b> (SF7&ndash;SF12). Higher = longer range but slower. Watch the tradeoff.</li>
+      <li>Range test: walk apart in steps, log signal strength (RSSI) at each distance, then graph RSSI vs. distance.</li>
+    </ol>
+
+    <div class="shannon"><b>Shannon&rsquo;s twist.</b> That spreading-factor dial <i>is</i> his channel-capacity theorem in your hand: trade speed for the ability to claw a readable signal out of the noise at greater range. Your RSSI-vs-distance graph is Shannon&rsquo;s law, drawn from data you collected yourself.</div>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>2&times; Heltec WiFi LoRa 32 V3, 915 MHz</li><li>2&times; antennas + 2&times; LiPo batteries</li><li>Laptop, Arduino IDE, 2 phones</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>A message crosses between the two boards</li><li>You have an RSSI-vs-distance graph</li><li>You can explain the SF tradeoff</li></ul></div>
+    </div>
+    <div class="note"><b>Safety:</b> Always attach the antenna <em>before</em> powering a board that transmits. Handle LiPo batteries gently &mdash; no bending, crushing, or charging unattended.</div>
+  </div>
+
+  <!-- MISSION 05 -->
+  <div class="brief m-field">
+    <div class="topbar"><div>Brief 05 / Cambridge Station</div><div class="stamp">Field Op</div></div>
+    <div class="head"><div class="mno">05</div><div class="mname">The Field Operation</div></div>
+    <div class="codename">Codename: Field Op &middot; The capstone</div>
+    <div class="objective"><b>Objective</b>Run one real operation that uses every skill of the summer at once.</div>
+
+    <h3>Briefing</h3>
+    <p>This is the mission you&rsquo;ll remember. A secret message, encrypted two ways, transmitted across real distance on a radio you built, logged, decoded, and confirmed &mdash; with a fragment passed by Morse over the ham radios for good measure. Codes, signals, hardware, and history, all firing together. Plan it like the operation it is.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Write the message. Encrypt it with your <b>one-time pad</b> (Mission 01).</li>
+      <li>Send it over the LoRa link, whose channel is itself <b>AES-encrypted</b> &mdash; two eras of secrecy stacked.</li>
+      <li>Deploy to two points &mdash; across a park, or two hilltops. Set spreading factor for the distance.</li>
+      <li>Transmit. Log RSSI and SNR for the link (Mission 02 &amp; 04).</li>
+      <li>Decode at the far end. Pass one fragment back by Morse on the ham radios (Mission 03). Write the after-action report.</li>
+    </ol>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>Both LoRa boards, charged + antennas</li><li>One-time pad key (two copies)</li><li>Ham radios, notebook, two operators</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>The message arrives and decodes cleanly</li><li>Signal stats are logged</li><li>The after-action report is written</li></ul></div>
+    </div>
+    <div class="note"><b>Handler note:</b> Let Auggie run it &mdash; pick the site, set the parameters, call the shots. You&rsquo;re the second operator, not the commander. The after-action report is his to author.</div>
+  </div>
+
+  <!-- SIDE QUEST -->
+  <div class="brief m-side">
+    <div class="topbar"><div>Brief S / Cambridge Station</div><div class="stamp">Side Quest</div></div>
+    <div class="head"><div class="mno">S</div><div class="mname">The Useless Box</div></div>
+    <div class="codename">Codename: Side Quest &middot; In the spirit of Shannon</div>
+    <div class="objective"><b>Objective</b>Build something gloriously pointless, exactly the way the patron would have wanted.</div>
+
+    <h3>Briefing</h3>
+    <p>Shannon built machines purely for delight &mdash; a juggling robot, a flame-throwing trumpet, and the famous <b>useless box</b>: flip its switch on, and a little arm reaches out to switch itself off. That&rsquo;s its entire purpose. The MIT Museum keeps his whimsical contraptions because play and genius were the same thing to him. Slot this in whenever you need a pure-fun afternoon.</p>
+
+    <h3>Field Operations</h3>
+    <ol class="ops">
+      <li>Gather a hobby servo, a toggle switch, a battery, and a small box.</li>
+      <li>Wire it so flipping the switch ON drives the servo arm to flip it back OFF.</li>
+      <li>Decorate the box. Give the machine a name.</li>
+      <li>Flip it on. Watch it refuse. Laugh.</li>
+    </ol>
+
+    <div class="cols">
+      <div class="box"><h3>Equipment</h3>
+        <ul class="list"><li>Hobby servo + toggle switch</li><li>Battery + small box</li><li>Glue, paint, imagination</li></ul></div>
+      <div class="box"><h3>Debrief &mdash; mission complete when</h3>
+        <ul class="list check"><li>The arm turns itself off</li><li>It made someone laugh</li><li>You felt like Shannon for a minute</li></ul></div>
+    </div>
+    <div class="note"><b>Handler note:</b> There&rsquo;s no Shannon &ldquo;twist&rdquo; here because the whole mission <em>is</em> the twist &mdash; the point of genius is that it can also just be fun.</div>
+  </div>
+
+</div>
+</body>
+</html>

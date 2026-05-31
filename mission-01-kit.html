@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission 01 — Codebreaker's Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spectral:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecdd; --panel:#fbf7ec; --ink:#221f1a; --muted:#6a6151; --rule:#bcae8e;
+    --amber:#9a5b12; --teal:#0f6e56; --stamp:#9a2d22; --navy:#22324a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Spectral',Georgia,serif; font-size:17px; line-height:1.6;}
+  .sheet{max-width:820px; margin:0 auto; padding:44px 26px 70px;}
+  .frame{border:1.5px solid var(--rule); padding:32px 36px 40px; background:var(--panel); position:relative;
+    box-shadow:0 18px 50px -32px rgba(34,31,26,.5);}
+  .frame::before{content:""; position:absolute; inset:7px; border:.5px solid var(--rule); pointer-events:none;}
+  .topbar{display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:11px;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .stamp{border:2px solid var(--stamp); color:var(--stamp); padding:5px 11px; transform:rotate(-2deg);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:11px; letter-spacing:.15em; border-radius:3px; opacity:.85;}
+  h1{font-family:'Fraunces',serif; font-weight:900; font-size:40px; margin:22px 0 4px; line-height:1.04;}
+  .sub{font-family:'Space Mono',monospace; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin-bottom:18px;}
+  h2{font-family:'Fraunces',serif; font-weight:600; font-size:15px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--navy); margin:38px 0 6px; display:flex; align-items:center; gap:12px;}
+  h2::before{content:""; width:22px; height:2px; background:var(--amber);}
+  .part{font-family:'Space Mono',monospace; color:var(--amber); font-weight:700;}
+  p{margin:9px 0;} ol{margin:9px 0; padding-left:22px;} ol li{margin:6px 0;}
+  .wheel{display:flex; justify-content:center; gap:24px; flex-wrap:wrap; margin:14px 0 4px;}
+  .disc-card{text-align:center;}
+  .disc-card .lbl{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:6px;}
+  svg.disc{display:block;}
+  .note{background:#fffdf6; border:.5px solid var(--rule); border-left:3px solid var(--teal); padding:12px 16px; margin:14px 0;
+    font-size:15.5px;}
+  .note b{color:var(--teal);}
+  .shannon{border-left-color:var(--stamp);} .shannon b{color:var(--stamp);}
+
+  table.freq{width:100%; border-collapse:collapse; font-family:'Space Mono',monospace; font-size:13px; margin:10px 0;}
+  table.freq td{border:.5px solid var(--rule); padding:6px 4px; text-align:center;}
+  table.freq .hdr{background:#efe7d4; font-weight:700; color:var(--navy);}
+  .tally{display:grid; grid-template-columns:repeat(13,1fr); gap:0; font-family:'Space Mono',monospace; margin:8px 0;}
+  .tally div{border:.5px solid var(--rule); aspect-ratio:1/1.4; display:flex; align-items:flex-start; justify-content:center; padding-top:4px; font-size:12px; color:var(--muted); position:relative;}
+  .tally div span{position:absolute; bottom:3px; font-size:9px;}
+
+  .intercept{font-family:'Space Mono',monospace; font-weight:700; font-size:18px; letter-spacing:.06em;
+    background:#26221b; color:#f1e4c4; padding:18px 16px; border-radius:4px; line-height:1.9; word-spacing:.2em;
+    text-align:center; margin:12px 0;}
+  .decode{font-family:'Space Mono',monospace; font-size:15px; color:var(--muted); margin-top:10px;}
+  .decode .blank{display:inline-block; min-width:1.1em; border-bottom:1px solid var(--muted); margin:0 1px;}
+  .answer{margin-top:10px; font-size:13px; color:var(--muted);}
+  .answer summary{cursor:pointer; font-family:'Space Mono',monospace; letter-spacing:.08em; color:var(--teal);}
+  .foot{margin-top:42px; padding-top:14px; border-top:1.5px solid var(--rule); font-family:'Space Mono',monospace;
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-align:center;}
+  @media print{ body{background:#fff} .frame{box-shadow:none} h2{break-after:avoid} .wheel{break-inside:avoid} .note{break-inside:avoid} }
+</style>
+<style id="hq-nav-style">
+  .hq-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:840px;margin:0 auto;padding:14px 30px 0;font-family:'Space Mono',monospace;}
+  .hq-nav .hq-home{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#0f6e56;text-decoration:none;border:1px solid #bcae8e;border-radius:4px;padding:6px 12px;
+    background:#fbf7ec;transition:background .15s;}
+  .hq-nav .hq-home:hover{background:#e3efe9;}
+  .hq-nav .hq-title{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a5b12;}
+  @media (max-width:560px){ .hq-nav .hq-title{display:none;} }
+  @media print{ .hq-nav{display:none !important;} }
+</style>
+</head>
+<body>
+<nav class="hq-nav">
+  <a class="hq-home" href="index.html">&#9204; Mission HQ</a>
+  <span class="hq-title">Operation: Signals &amp; Secrets</span>
+</nav>
+
+<div class="sheet">
+<div class="frame">
+
+  <div class="topbar">
+    <div>Mission 01 &middot; Companion to Dossier RF&ndash;1948&ndash;C</div>
+    <div class="stamp">For Agent Auggie</div>
+  </div>
+
+  <h1>Codebreaker&rsquo;s Kit</h1>
+  <div class="sub">Cipher Wheel &middot; Frequency Analysis &middot; First Intercept</div>
+
+  <p>Welcome to your first mission, Agent. Before radios and circuits, every secret message came down to one trick: scrambling letters so only the right person could read them. Today you build the tool, learn the codebreaker&rsquo;s weapon, and crack your first real intercept.</p>
+
+  <h2><span class="part">Part A</span> &nbsp;Build the cipher wheel</h2>
+  <p>Print this page. Cut out both discs along the outer circle. Place the small disc on top of the big one, line up the centers, and push a brad (split pin) through both center dots so the small disc spins.</p>
+  <div class="wheel">
+    <div class="disc-card"><svg class="disc" id="outer" width="300" height="300" viewBox="0 0 300 300" aria-label="Outer cipher disc, plaintext ring A to Z"></svg><div class="lbl">Outer disc &middot; plaintext</div></div>
+    <div class="disc-card"><svg class="disc" id="inner" width="232" height="232" viewBox="0 0 232 232" aria-label="Inner cipher disc, ciphertext ring A to Z"></svg><div class="lbl">Inner disc &middot; ciphertext</div></div>
+  </div>
+  <div class="note"><b>How to use it:</b> Pick a secret &ldquo;shift&rdquo; number, say 3. Turn the inner disc so its <b>A</b> sits under the outer <b>D</b> (that&rsquo;s 3 letters over). Now every outer letter points to its secret version on the inner ring. To read a coded message, line the discs up the same way and go backwards.</div>
+
+  <h2><span class="part">Part B</span> &nbsp;The codebreaker&rsquo;s weapon</h2>
+  <p>How did Bletchley Park break codes without knowing the shift? <b>Frequency analysis.</b> In English, some letters show up far more than others. Count the letters in a secret message, and the most common one is probably a disguised <b>E</b>. That single clue can unlock the whole shift.</p>
+  <table class="freq">
+    <tr class="hdr"><td>E</td><td>T</td><td>A</td><td>O</td><td>I</td><td>N</td><td>S</td><td>R</td><td>H</td><td>L</td></tr>
+    <tr><td>13%</td><td>9%</td><td>8%</td><td>8%</td><td>7%</td><td>7%</td><td>6%</td><td>6%</td><td>6%</td><td>4%</td></tr>
+  </table>
+  <p style="font-size:14.5px; color:var(--muted)">Tally the letters of an intercept here &mdash; one mark per appearance &mdash; then find your tallest column:</p>
+  <div class="tally" id="tally"></div>
+
+  <h2><span class="part">Part C</span> &nbsp;Your first intercept</h2>
+  <p>This message was captured on the wire. It is hidden with a single Caesar shift. Use your wheel and the frequency trick to bring it back.</p>
+  <div class="intercept">DLSJVTL HNLUA HBNNPL FVBY TPZZPVU<br>AOPZ ZBTTLY PZ AV THZALY AOL<br>ZLJYLA SPML VM TLZZHNLZ</div>
+  <div class="note"><b>Hint:</b> The most common letter in the intercept is <b>L</b>. If <b>L</b> is really a disguised <b>E</b>, how many letters apart are E and L? Set your wheel to that shift and read it off.</div>
+  <p class="decode">Write your decoded message here:<br>
+    <span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span>
+    &nbsp; <span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span>
+    &nbsp; <span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span><span class="blank">&nbsp;</span>
+  </p>
+  <details class="answer"><summary>Stuck? Reveal the shift (for the Handler)</summary>
+    <p>L &rarr; E is a shift of 7. Decode every letter by moving 7 places back (D&rarr;W, L&rarr;E, S&rarr;L &hellip;). The message begins &ldquo;WELCOME AGENT AUGGIE&hellip;&rdquo; and tells you your real summer mission.</p>
+  </details>
+
+  <div class="note shannon"><b>Shannon&rsquo;s twist:</b> Your Caesar cipher can be broken because the same letter always hides the same way &mdash; frequency analysis sees right through it. Claude Shannon proved there is one code that <i>can&rsquo;t</i> be broken: a <b>one-time pad</b>, where the shift changes for every single letter using a random key as long as the message. Try it next &mdash; and notice the catch: you and your partner both need the exact same secret key, which is the hardest part of every secret in history.</div>
+
+  <div class="foot">Mission 01 &middot; Decode, then report to Handler &middot; Welcome to the work</div>
+
+</div>
+</div>
+
+<script>
+  function buildDisc(svgId, size, letterR, tickR, rot){
+    var svg = document.getElementById(svgId);
+    var c = size/2;
+    var NS = "http://www.w3.org/2000/svg";
+    function el(tag, attrs){ var e = document.createElementNS(NS, tag); for(var k in attrs){ e.setAttribute(k, attrs[k]); } return e; }
+    // cut circle
+    svg.appendChild(el("circle", {cx:c, cy:c, r:c-3, fill:"#fffdf6", stroke:"#9a5b12", "stroke-width":"1.2", "stroke-dasharray":"4 3"}));
+    // inner guide ring
+    svg.appendChild(el("circle", {cx:c, cy:c, r:tickR-12, fill:"none", stroke:"#d8cdb0", "stroke-width":"0.6"}));
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for(var i=0;i<26;i++){
+      var ang = (-90 + i*(360/26) + rot) * Math.PI/180;
+      var lx = c + letterR*Math.cos(ang);
+      var ly = c + letterR*Math.sin(ang);
+      var t = el("text", {x:lx, y:ly, "text-anchor":"middle", "dominant-baseline":"central",
+        "font-family":"'Space Mono', monospace", "font-size":(size>260?16:14), "font-weight":"700", fill:"#221f1a"});
+      t.textContent = letters[i];
+      svg.appendChild(t);
+      // tick marks
+      var t1a = c + tickR*Math.cos(ang), t1b = c + tickR*Math.sin(ang);
+      var t2a = c + (tickR+6)*Math.cos(ang), t2b = c + (tickR+6)*Math.sin(ang);
+      svg.appendChild(el("line", {x1:t1a, y1:t1b, x2:t2a, y2:t2b, stroke:"#b6a987", "stroke-width":"0.8"}));
+    }
+    // center hole
+    svg.appendChild(el("circle", {cx:c, cy:c, r:4, fill:"none", stroke:"#9a2d22", "stroke-width":"1"}));
+    svg.appendChild(el("line", {x1:c-7, y1:c, x2:c+7, y2:c, stroke:"#9a2d22", "stroke-width":"0.6"}));
+    svg.appendChild(el("line", {x1:c, y1:c-7, x2:c, y2:c+7, stroke:"#9a2d22", "stroke-width":"0.6"}));
+  }
+  buildDisc("outer", 300, 132, 118, 0);
+  buildDisc("inner", 232, 96, 106, 0);
+
+  // tally grid A-Z
+  var tg = document.getElementById("tally");
+  var L = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for(var i=0;i<26;i++){ var d=document.createElement("div"); d.innerHTML = L[i] + '<span>&nbsp;</span>'; tg.appendChild(d); }
+</script>
+</body>
+</html>

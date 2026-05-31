@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission 02 — Signal Field Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecdd; --panel:#fbf7ec; --ink:#221f1a; --muted:#6a6151; --rule:#bcae8e;
+    --amber:#9a5b12; --teal:#0f6e56; --stamp:#9a2d22; --navy:#22324a; --accent:#0f6e56;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Spectral',Georgia,serif; font-size:16px; line-height:1.6;}
+  .sheet{max-width:840px; margin:0 auto; padding:40px 24px 64px;}
+  .page{border:1.5px solid var(--rule); padding:30px 36px 38px; background:var(--panel); position:relative;
+    box-shadow:0 16px 46px -32px rgba(34,31,26,.5); margin-bottom:44px;}
+  .page::before{content:""; position:absolute; inset:7px; border:.5px solid var(--rule); pointer-events:none;}
+  .page::after{content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--accent); opacity:.85;}
+
+  .topbar{display:flex; justify-content:space-between; align-items:flex-start; font-family:'Space Mono',monospace;
+    font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+  .stamp{border:2px solid var(--stamp); color:var(--stamp); padding:5px 10px; transform:rotate(2.5deg);
+    font-family:'Space Mono',monospace; font-weight:700; font-size:10.5px; letter-spacing:.14em; border-radius:3px; opacity:.85;}
+
+  .head{display:flex; align-items:baseline; gap:18px; margin:20px 0 2px;}
+  .mno{font-family:'Space Mono',monospace; font-weight:700; font-size:40px; color:var(--accent); line-height:.9;}
+  .mname{font-family:'Fraunces',serif; font-weight:900; font-size:32px; line-height:1.02; letter-spacing:-.01em;}
+  .codename{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted); margin:2px 0 14px;}
+  .objective{font-size:17px; border-top:.5px solid var(--rule); border-bottom:.5px solid var(--rule);
+    padding:11px 0; margin-bottom:16px;}
+  .objective b{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); display:block; margin-bottom:3px;}
+
+  h3{font-family:'Fraunces',serif; font-weight:600; font-size:13.5px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--navy); margin:22px 0 4px; display:flex; align-items:center; gap:10px;}
+  h3::before{content:""; width:18px; height:2px; background:var(--accent);}
+  p{margin:8px 0;}
+
+  ol.ops{margin:8px 0; padding-left:0; counter-reset:op; list-style:none;}
+  ol.ops li{position:relative; padding:8px 0 8px 40px; border-bottom:.5px dotted var(--rule); font-size:15px;}
+  ol.ops li::before{counter-increment:op; content:counter(op); position:absolute; left:0; top:8px;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; color:#fff; background:var(--accent);
+    width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+  ol.ops b{color:var(--ink);}
+  code,.mono{font-family:'Space Mono',monospace; font-size:13.5px; background:#efe7d4; padding:1px 5px; border-radius:3px;}
+
+  .warn{background:#fbeee6; border:.5px solid #d8a98f; border-left:3px solid var(--stamp); padding:11px 15px;
+    margin:14px 0; font-size:14.5px;}
+  .warn b{color:var(--stamp);}
+  .shannon{background:#fffdf6; border:.5px solid var(--rule); border-left:3px solid var(--teal); padding:11px 15px;
+    margin:14px 0; font-size:14.5px;}
+  .shannon b{color:var(--teal);}
+
+  table.hunt{width:100%; border-collapse:collapse; font-size:14.5px; margin:8px 0;}
+  table.hunt th, table.hunt td{border:.5px solid var(--rule); padding:7px 9px; text-align:left;}
+  table.hunt th{background:#e3efe9; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--navy);}
+  table.hunt .freq{font-family:'Space Mono',monospace; white-space:nowrap; color:var(--teal); font-weight:700;}
+
+  /* morse */
+  .morse-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:7px; margin:10px 0;}
+  .mcell{border:.5px solid var(--rule); border-radius:4px; padding:7px 4px 6px; text-align:center; background:#fffdf6;}
+  .mcell .ch{font-family:'Fraunces',serif; font-weight:900; font-size:20px; line-height:1;}
+  .mcell .cd{font-family:'Space Mono',monospace; font-size:14px; letter-spacing:.12em; color:var(--teal); margin-top:5px; height:16px;}
+  .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ink); vertical-align:middle; margin:0 1px;}
+  .dash{display:inline-block; width:15px; height:6px; border-radius:3px; background:var(--ink); vertical-align:middle; margin:0 1px;}
+  .examples{display:flex; gap:26px; flex-wrap:wrap; margin-top:10px; font-size:14.5px;}
+  .examples .lbl{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
+
+  /* log */
+  table.log{width:100%; border-collapse:collapse; font-family:'Space Mono',monospace; font-size:13px; margin:8px 0;}
+  table.log th{background:#e3efe9; border:.5px solid var(--rule); padding:8px 4px; font-size:10.5px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--navy);}
+  table.log td{border:.5px solid var(--rule); height:30px;}
+  .plot{margin-top:10px; border:1px solid var(--rule); background:repeating-linear-gradient(0deg,transparent,transparent 23px,#e4dcc6 23px,#e4dcc6 24px),
+        repeating-linear-gradient(90deg,transparent,transparent 31px,#e4dcc6 31px,#e4dcc6 32px); background-color:#fffdf6;
+        height:264px; position:relative;}
+  .plot .yl{position:absolute; left:6px; top:6px; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:.08em;}
+  .plot .xl{position:absolute; right:8px; bottom:5px; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:.08em;}
+
+  .note{font-size:13px; color:var(--muted); font-style:italic; margin-top:14px; padding-top:10px; border-top:.5px solid var(--rule);}
+  .note b{font-style:normal; color:var(--stamp);}
+
+  @media (max-width:640px){ .morse-grid{grid-template-columns:repeat(4,1fr)} .mname{font-size:25px} }
+  @media print{
+    body{background:#fff} .sheet{padding:0}
+    .page{box-shadow:none; margin:0; border-width:1px; page-break-after:always; min-height:96vh;}
+    .morse-grid, table.hunt, .plot, ol.ops li{break-inside:avoid;}
+  }
+</style>
+<style id="hq-nav-style">
+  .hq-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:840px;margin:0 auto;padding:14px 30px 0;font-family:'Space Mono',monospace;}
+  .hq-nav .hq-home{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:#0f6e56;text-decoration:none;border:1px solid #bcae8e;border-radius:4px;padding:6px 12px;
+    background:#fbf7ec;transition:background .15s;}
+  .hq-nav .hq-home:hover{background:#e3efe9;}
+  .hq-nav .hq-title{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a5b12;}
+  @media (max-width:560px){ .hq-nav .hq-title{display:none;} }
+  @media print{ .hq-nav{display:none !important;} }
+</style>
+</head>
+<body>
+<nav class="hq-nav">
+  <a class="hq-home" href="index.html">&#9204; Mission HQ</a>
+  <span class="hq-title">Operation: Signals &amp; Secrets</span>
+</nav>
+
+<div class="sheet">
+
+  <!-- PAGE 1 — SDR QUICK START -->
+  <div class="page">
+    <div class="topbar"><div>Brief 02 / Field Pack 1 of 3</div><div class="stamp">Signal</div></div>
+    <div class="head"><div class="mno">02</div><div class="mname">See the Invisible</div></div>
+    <div class="codename">Field Pack &middot; RTL-SDR Quick-Start</div>
+    <div class="objective"><b>Objective</b>Turn a $30 USB stick and your laptop into a window onto every radio wave in the air around your house.</div>
+
+    <h3>Gear check</h3>
+    <p>An <b>RTL-SDR dongle</b> (the RTL-SDR Blog V4 kit is the standard pick &mdash; it comes with the dipole antenna you&rsquo;ll need), its little antenna on the magnetic base, and a laptop. The dongle only <i>listens</i>, so no license is needed for this mission.</p>
+
+    <h3>Setup &mdash; do it once, with your Handler</h3>
+    <ol class="ops">
+      <li>Download <b>SDR++</b> (the easiest modern receiver). For the V4 dongle, grab the <b>nightly build</b> &mdash; older versions don&rsquo;t know about the V4 yet.</li>
+      <li>Plug the dongle into a USB port. Don&rsquo;t use a flimsy extension &mdash; a weak port causes wavy lines and no signals.</li>
+      <li><b>Windows only:</b> run <code>Zadig</code>. Choose <i>Options &rarr; List All Devices</i>, select <b>Bulk-In, Interface (Interface 0)</b>, and click <i>Install / Replace Driver</i> to load <code>WinUSB</code>. (Mac/Linux skip this step.)</li>
+      <li>Open SDR++. Set the <b>Source</b> to <i>RTL-SDR</i>, then press the big <b>Play</b> button.</li>
+      <li>Slowly raise the <b>Gain</b> slider until signals appear but the noise doesn&rsquo;t turn to mush. Tune by clicking on the waterfall.</li>
+    </ol>
+
+    <div class="warn"><b>The #1 V4 gotcha:</b> if you see nothing, or stations show up at the wrong frequency, you&rsquo;re using the old drivers. The V4 needs the RTL-SDR Blog drivers to work at all &mdash; redo the Zadig step. On Windows 11 you may also need to turn off <i>Core Isolation &rarr; Memory Integrity</i>, which blocks the driver.</div>
+
+    <h3>First signals to hunt</h3>
+    <table class="hunt">
+      <tr><th>Target</th><th>Tune to</th><th>Listen for</th></tr>
+      <tr><td>FM radio (easy win)</td><td class="freq">88&ndash;108 MHz</td><td>Music &mdash; proof it&rsquo;s working</td></tr>
+      <tr><td>NOAA weather radio</td><td class="freq">162.400&ndash;162.550 MHz</td><td>A robotic forecast voice, 24/7</td></tr>
+      <tr><td>Aircraft (airband, AM)</td><td class="freq">118&ndash;137 MHz</td><td>Pilots &amp; control towers</td></tr>
+      <tr><td>2-meter ham band</td><td class="freq">144&ndash;148 MHz</td><td>Local operators &mdash; your future</td></tr>
+      <tr><td>The noise floor</td><td class="freq">a quiet gap</td><td>Steady hiss = pure noise</td></tr>
+    </table>
+
+    <div class="shannon"><b>Shannon&rsquo;s idea, made visible.</b> On the waterfall, a real signal is a bright stripe standing <i>above</i> the fuzzy background. That background is <b>noise</b>, and the height of the stripe above it is the <b>signal-to-noise ratio</b>. Shannon proved this ratio sets the speed limit for how many bits a channel can carry &mdash; the cleaner the signal stands out, the more it can say. You&rsquo;ll put a real number on this in Mission 04.</div>
+
+    <div class="note"><b>Safety:</b> the SDR only receives &mdash; it never transmits, so it&rsquo;s perfectly legal before you&rsquo;re licensed. Treat the tiny antenna gently and keep the dongle away from anything hot; they warm up in use.</div>
+  </div>
+
+  <!-- PAGE 2 — MORSE CARD -->
+  <div class="page">
+    <div class="topbar"><div>Brief 02 / Field Pack 2 of 3</div><div class="stamp">Morse</div></div>
+    <div class="head"><div class="mno">02</div><div class="mname">The Oldest Code</div></div>
+    <div class="codename">Field Pack &middot; Morse Reference Card</div>
+    <div class="objective"><b>Objective</b>Learn to send a message the way operators have for 180 years &mdash; one dot and dash at a time.</div>
+
+    <p>Morse turns letters into short beeps (<b>dots</b> <span class="dot"></span>) and long beeps (<b>dashes</b> <span class="dash"></span>). It&rsquo;s the first &ldquo;digital&rdquo; code: every letter is just a pattern of two symbols &mdash; the great-grandparent of the bits inside your LoRa radio.</p>
+
+    <div class="morse-grid">
+      <div class="mcell"><div class="ch">A</div><div class="cd"><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">B</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">C</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">D</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">E</div><div class="cd"><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">F</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">G</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">H</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">I</div><div class="cd"><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">J</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">K</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">L</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">M</div><div class="cd"><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">N</div><div class="cd"><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">O</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">P</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">Q</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">R</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">S</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">T</div><div class="cd"><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">U</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">V</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">W</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">X</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">Y</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">Z</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">1</div><div class="cd"><span class="dot"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">2</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">3</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dash"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">4</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dash"></span></div></div>
+      <div class="mcell"><div class="ch">5</div><div class="cd"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">6</div><div class="cd"><span class="dash"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">7</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">8</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">9</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dot"></span></div></div>
+      <div class="mcell"><div class="ch">0</div><div class="cd"><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span><span class="dash"></span></div></div>
+    </div>
+
+    <h3>How to send it</h3>
+    <p>A dash lasts about as long as three dots. Leave one dot&rsquo;s worth of silence between beeps, three between letters, and seven between words. Tap it on your Mission&nbsp;02 buzzer, or just hum it.</p>
+
+    <div class="examples">
+      <div><span class="lbl">Your callsign</span><br>
+        <b>A</b> <span class="dot"></span><span class="dash"></span> &nbsp;
+        <b>U</b> <span class="dot"></span><span class="dot"></span><span class="dash"></span> &nbsp;
+        <b>G</b> <span class="dash"></span><span class="dash"></span><span class="dot"></span> &nbsp;
+        <b>G</b> <span class="dash"></span><span class="dash"></span><span class="dot"></span> &nbsp;
+        <b>I</b> <span class="dot"></span><span class="dot"></span> &nbsp;
+        <b>E</b> <span class="dot"></span></div>
+      <div><span class="lbl">The famous one &mdash; SOS</span><br>
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span> &nbsp;
+        <span class="dash"></span><span class="dash"></span><span class="dash"></span> &nbsp;
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </div>
+
+    <div class="note"><b>Spy challenge:</b> send your name to your Handler with no sound at all &mdash; blink a flashlight: quick blink = dot, long blink = dash. Same code, different signal. That&rsquo;s the whole secret of this summer in one sentence.</div>
+  </div>
+
+  <!-- PAGE 3 — RANGE LOG -->
+  <div class="page">
+    <div class="topbar"><div>Brief 02 / Field Pack 3 of 3</div><div class="stamp">Data</div></div>
+    <div class="head"><div class="mno">02</div><div class="mname">The Field Log</div></div>
+    <div class="codename">Field Pack &middot; Distance vs. Signal Strength</div>
+    <div class="objective"><b>Objective</b>Collect real data with the radios you build in Mission 04, then graph it &mdash; your first original radio experiment.</div>
+
+    <p>Once your LoRa boards work (Mission 04), send a message from farther and farther away. Each time, write down the <b>RSSI</b> (signal strength, in dBm &mdash; numbers closer to zero are stronger) and <b>SNR</b> shown on the screen. Then change the <b>spreading factor</b> and run it again. Fill the table, then plot RSSI against distance on the grid below.</p>
+
+    <table class="log">
+      <tr><th>#</th><th>Distance (m)</th><th>Spreading factor</th><th>RSSI (dBm)</th><th>SNR (dB)</th><th>Got through? Y/N</th><th>Notes (trees? walls?)</th></tr>
+      <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+
+    <h3>Plot it &mdash; distance across, signal strength up</h3>
+    <div class="plot">
+      <div class="yl">RSSI &uarr; (stronger near top)</div>
+      <div class="xl">distance &rarr;</div>
+    </div>
+
+    <div class="shannon"><b>What the graph shows.</b> The line should sag as you walk away &mdash; signal gets weaker with distance. Find where it sags below where messages stop arriving: that&rsquo;s your link&rsquo;s edge. Now raise the spreading factor and the edge moves farther out, but each message takes longer to send. That trade is <b>Shannon&rsquo;s channel-capacity law</b>, drawn in your own pencil.</div>
+
+    <div class="note"><b>Handler tip:</b> measure distance roughly by counting paces (one adult pace &asymp; 0.75&nbsp;m) so Auggie owns the whole measurement, units and all. Keep this sheet for the Mission 05 after-action report.</div>
+  </div>
+
+</div>
+</body>
+</html>
